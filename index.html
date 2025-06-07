@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal Cinta - Selamat Ulang Tahun Sayang ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pink-soft': '#F8C8DC',
+                        'pink-light': '#FDCEDF',
+                        'pink-cream': '#F9F5F6',
+                        'cream': '#FFF8F0',
+                        'gold': '#D4AF37'
+                    },
+                    fontFamily: {
+                        'handwriting': ['Caveat', 'cursive'],
+                        'elegant': ['Dancing Script', 'cursive'],
+                        'clean': ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .page-flip {
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        .page-flip.flipped {
+            transform: rotateY(-180deg);
+        }
+        .page-back {
+            transform: rotateY(180deg);
+        }
+        .journal-texture {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(216, 190, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .sparkle {
+            animation: sparkle 2s linear infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .polaroid {
+            background: white;
+            padding: 12px;
+            padding-bottom: 50px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+        }
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        /* Enhanced Page Transition Animations */
+        .journal-page {
+            opacity: 0;
+            transform: translateX(100px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+            visibility: hidden;
+        }
+        
+        .journal-page.active {
+            opacity: 1 !important;
+            transform: translateX(0) scale(1) !important;
+            pointer-events: all;
+            position: relative;
+            z-index: 10;
+            visibility: visible !important;
+        }
+        
+        .journal-page.slide-out-left {
+            opacity: 0;
+            transform: translateX(-100px) scale(0.95);
+            z-index: 1;
+            visibility: hidden;
+        }
+        
+        .journal-page.slide-out-right {
+            opacity: 0;
+            transform: translateX(100px) scale(0.95);
+            z-index: 1;
+            visibility: hidden;
+        }
+        
+        /* Cover Animation */
+        #cover {
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        #cover.fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        /* Smooth button hover effects */
+        button {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Page content animation on load */
+        .journal-page.active .bg-white {
+            animation: pageContentIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+        }
+        
+        @keyframes pageContentIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Stagger animation for polaroids */
+        .journal-page.active .polaroid {
+            animation: polaroidIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        
+        .journal-page.active .polaroid:nth-child(1) { animation-delay: 0.1s; }
+        .journal-page.active .polaroid:nth-child(2) { animation-delay: 0.2s; }
+        .journal-page.active .polaroid:nth-child(3) { animation-delay: 0.3s; }
+        .journal-page.active .polaroid:nth-child(4) { animation-delay: 0.4s; }
+        
+        @keyframes polaroidIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) rotate(-10deg) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(-2deg) scale(1);
+            }
+        }
+        
+        /* Enhanced loading animation for cover */
+        #cover .bg-white {
+            animation: coverIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        
+        @keyframes coverIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Container styling */
+        #journal {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .journal-page {
+                padding: 1rem;
+            }
+            
+            .bg-white {
+                padding: 1.5rem !important;
+                margin: 0.5rem;
+            }
+            
+            .text-4xl {
+                font-size: 2rem !important;
+            }
+            
+            .text-5xl {
+                font-size: 2.5rem !important;
+            }
+            
+            .text-3xl {
+                font-size: 1.5rem !important;
+            }
+            
+            .text-2xl {
+                font-size: 1.25rem !important;
+            }
+            
+            .text-xl {
+                font-size: 1.1rem !important;
+            }
+            
+            .polaroid {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            button {
+                padding: 0.75rem 1.5rem !important;
+                font-size: 0.9rem !important;
+            }
+        }
+
+        /* Gift box animation */
+        .gift-box {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        
+        .gift-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        
+        .gift-base {
+            width: 150px;
+            height: 120px;
+            background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+            animation: giftShake 2s ease-in-out infinite;
+        }
+        
+        .gift-lid {
+            width: 160px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff8fab, #ffa8cc);
+            border-radius: 10px;
+            position: absolute;
+            top: 95px;
+            left: -5px;
+            box-shadow: 0 4px 10px rgba(255, 107, 157, 0.2);
+            transform-origin: center bottom;
+            animation: lidFloat 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        
+        .gift-ribbon-v {
+            width: 20px;
+            height: 120px;
+            background: linear-gradient(to right, #D4AF37, #ffeb3b);
+            position: absolute;
+            left: 65px;
+            bottom: 0;
+            border-radius: 2px;
+        }
+        
+        .gift-ribbon-h {
+            width: 150px;
+            height: 20px;
+            background: linear-gradient(to bottom, #D4AF37, #ffeb3b);
+            position: absolute;
+            left: 0;
+            bottom: 50px;
+            border-radius: 2px;
+        }
+        
+        .gift-bow {
+            width: 40px;
+            height: 30px;
+            background: #D4AF37;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: 80px;
+            left: 55px;
+            z-index: 15;
+            animation: bowBounce 2s ease-in-out infinite;
+        }
+        
+        .gift-bow::before {
+            content: '';
+            width: 20px;
+            height: 25px;
+            background: #D4AF37;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            left: -15px;
+            top: 2px;
+            transform: rotate(-30deg);
+        }
+        
+        .gift-bow::after {
+            content: '';
+            width: 20px;
+            height: 25px;
+            background: #D4AF37;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            right: -15px;
+            top: 2px;
+            transform: rotate(30deg);
+        }
+        
+        @keyframes giftShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-2px) rotate(-1deg); }
+            75% { transform: translateX(2px) rotate(1deg); }
+        }
+        
+        @keyframes lidFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+        
+        @keyframes bowBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.05); }
+        }
+        
+        /* Letter animation */
+        .letter {
+            width: 380px;
+            height: 520px;
+            background: linear-gradient(135deg, #fff8f0, #f9f5f6);
+            border: 2px solid #F8C8DC;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+            opacity: 0;
+            z-index: 20;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: letterAppear 1s ease-out forwards;
+            animation-delay: 3s;
+            padding: 1.5rem;
+        }
+        
+        @keyframes letterAppear {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        .letter-content {
+            height: 100%;
+            font-family: 'Caveat', cursive;
+            color: #4a5568;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            margin: 0.6rem 0;
+            font-size: 1.1rem;
+            padding: 0.3rem 0;
+        }
+        
+        /* Mobile adjustments for gift and letter */
+        @media (max-width: 768px) {
+            .gift-box, .gift-container, .gift-base {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .gift-base {
+                height: 95px;
+            }
+            
+            .gift-lid {
+                width: 130px;
+                height: 35px;
+                top: 75px;
+                left: -5px;
+            }
+            
+            .gift-ribbon-v {
+                width: 15px;
+                height: 95px;
+                left: 52px;
+            }
+            
+            .gift-ribbon-h {
+                width: 120px;
+                height: 15px;
+                bottom: 40px;
+            }
+            
+            .gift-bow {
+                width: 30px;
+                height: 25px;
+                top: 65px;
+                left: 45px;
+            }
+            
+            .letter {
+                width: 90vw;
+                max-width: 380px;
+                height: 90vh;
+                max-height: 550px;
+                padding: 1.2rem;
+            }
+            
+            .letter-content {
+                font-size: 0.9rem;
+            }
+            
+            .wishlist-item {
+                font-size: 0.9rem;
+                margin: 0.5rem 0;
+                padding: 0.2rem 0;
+            }
+        }
+        
+        /* Prevent text selection on gift box */
+        .gift-box * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+        
+        /* Letter close button */
+        .letter-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .letter-close:hover {
+            background: #ff8fab;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-cream via-cream to-pink-light min-h-screen">
+    
+    <!-- Cover Jurnal -->
+    <div id="cover" class="min-h-screen flex items-center justify-center p-4 journal-texture">
+        <div class="text-center">
+            <!-- Dekorasi Bunga -->
+            <div class="absolute top-10 left-10 text-pink-soft text-6xl floating">🌸</div>
+            <div class="absolute top-20 right-16 text-pink-soft text-4xl floating" style="animation-delay: 1s;">🌺</div>
+            <div class="absolute bottom-20 left-20 text-pink-soft text-5xl floating" style="animation-delay: 2s;">🌷</div>
+            <div class="absolute bottom-16 right-12 text-pink-soft text-3xl floating" style="animation-delay: 1.5s;">💕</div>
+            
+            <!-- Cover Jurnal -->
+            <div class="bg-white rounded-3xl shadow-2xl p-12 max-w-md mx-auto border-8 border-pink-soft journal-texture">
+                <div class="sparkle text-gold text-2xl mb-4">✨</div>
+                <h1 class="font-elegant text-4xl text-pink-600 mb-6">Happy Next Level Baby</h1>
+                <div class="font-handwriting text-2xl text-gray-700 mb-8">
+                    This Letter is for you
+                </div>
+                <div class="text-sm font-clean text-gray-500 mb-8">
+                    Please open this letter with love
+                </div>
+                <button id="openJournal" class="bg-gradient-to-r from-pink-soft to-pink-light text-white font-clean font-semibold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    Bukaaaaaaa 💖
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jurnal Pages -->
+    <div id="journal" class="hidden min-h-screen">
+        <!-- Page 1: Selamat Ulang Tahun -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page1">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-2xl mx-auto border-4 border-pink-light">
+                <!-- Dekorasi washi tape -->
+                <div class="absolute -top-2 left-8 w-16 h-6 bg-pink-soft opacity-70 rounded transform -rotate-12"></div>
+                <div class="absolute -top-2 right-8 w-12 h-6 bg-pink-light opacity-70 rounded transform rotate-12"></div>
+                
+                <div class="text-center mb-8">
+                    <div class="text-6xl mb-4">🎂</div>
+                    <h2 class="font-elegant text-5xl text-pink-600 mb-4">Selamat Ulang Tahun</h2>
+                    <h3 class="font-elegant text-3xl text-pink-500">Sayangku! 💕</h3>
+                </div>
+                
+                <div class="font-handwriting text-xl text-gray-700 text-center leading-relaxed">
+                    "Today is ur special day,<br>
+                    because i have u and i love u so...<br>
+                    <span class="text-pink-600 font-semibold">MUCH!!!! ✨</span><br><br>
+                    Penasaran ga siii samaa isinya apaa?<br>
+                    Sumpah, aku ga tidur jadi bukaa sampai habiss 😡."
+                </div>
+                
+                <div class="flex justify-center mt-8">
+                    <button onclick="nextPage()" class="bg-pink-soft text-white font-clean py-3 px-6 rounded-full hover:bg-pink-600 transition-all duration-300 shadow-md">
+                        NEXTTTT 👉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Pesan Lucu Pertama -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page2">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-4 border-pink-light">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="font-elegant text-4xl text-pink-600 mb-6">Pesan Lucu Pertama</h2>
+                        <div class="font-handwriting text-lg text-gray-700 leading-relaxed">
+                            💭 <strong>First Chat di IG:</strong><br>
+                            "Ini chat pertama kita di IG, kalo di app satu lagi aku gapunya huhuhu 😖
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="polaroid">
+                            <div class="bg-gray-200 w-64 h-48 flex items-center justify-center rounded overflow-hidden">
+                                <img src="img/chat_pertama.png" alt="Screenshot chat pertama" class="w-full h-full object-cover">
+                            </div>
+                            <div class="font-handwriting text-center mt-2 text-gray-600">
+                                "First Instagram Chat"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevPage()" class="bg-gray-300 text-gray-700 font-clean py-3 px-6 rounded-full hover:bg-gray-400 transition-all duration-300">
+                        👈 Kembali
+                    </button>
+                    <button onclick="nextPage()" class="bg-pink-soft text-white font-clean py-3 px-6 rounded-full hover:bg-pink-600 transition-all duration-300">
+                        Selanjutnya 👉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Kencan Pertama -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page3">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-4 border-pink-light">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="flex justify-center">
+                        <div class="polaroid" style="transform: rotate(2deg);">
+                            <div class="bg-gray-200 w-64 h-48 flex items-center justify-center rounded overflow-hidden">
+                                <img src="img/first_date.jpg" alt="Foto kencan pertama" class="w-full h-full object-cover">
+                            </div>
+                            <div class="font-handwriting text-center mt-2 text-gray-600">
+                                "Our First Date"
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-elegant text-4xl text-pink-600 mb-6">First Date</h2>
+                        <div class="font-handwriting text-lg text-gray-700 leading-relaxed">
+                            🌟 <strong>Tanggal:</strong> 13 Mei 2025<br><br>
+                            🍽️ <strong>Tempat:</strong> PVJ, Bandung<br><br>
+                            💕 <strong>About this:</strong><br>
+                            "Jujur sampai hari ini aku belum bisa lupain moment first date kita,
+                            i love you the day i met you, i love you today, and i will <br />
+                            love you the rest of my life."
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevPage()" class="bg-gray-300 text-gray-700 font-clean py-3 px-6 rounded-full hover:bg-gray-400 transition-all duration-300">
+                        👈 Kembali
+                    </button>
+                    <button onclick="nextPage()" class="bg-pink-soft text-white font-clean py-3 px-6 rounded-full hover:bg-pink-600 transition-all duration-300">
+                        Selanjutnya 👉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Koleksi Foto & Video Lucu WhatsApp -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page4">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-4 border-pink-light">
+                <h2 class="font-elegant text-4xl text-pink-600 text-center mb-8">Everything always about you</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="polaroid">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <video class="w-full h-full object-cover" autoplay loop muted playsinline>
+                                <source src="img/video_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "Why u look so beautiful?"
+                        </div>
+                    </div>
+                    
+                    <div class="polaroid" style="transform: rotate(-1deg);">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <img src="img/photo_1.jpg" alt="Foto 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "Manyunnnn"
+                        </div>
+                    </div>
+                    
+                    <div class="polaroid" style="transform: rotate(1deg);">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <video class="w-full h-full object-cover" autoplay loop muted playsinline>
+                                <source src="img/video_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "cuuu bangetttt 😩 "
+                        </div>
+                    </div>
+                    
+                    <div class="polaroid" style="transform: rotate(-2deg);">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <img src="img/photo_2.jpg" alt="Foto 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "Nungguin koki ngangkat! 😡"
+                        </div>
+                    </div>
+
+                    <div class="polaroid" style="transform: rotate(2deg);">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <img src="img/photo_3.jpg" alt="Foto 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "Sayang pilihinnn yang baguss! 😍"
+                        </div>
+                    </div>
+
+                    <div class="polaroid">
+                        <div class="bg-gray-200 w-full h-48 flex items-center justify-center rounded overflow-hidden">
+                            <img src="img/photo_4.jpg" alt="Foto 4" class="w-full h-full object-cover">
+                        </div>
+                        <div class="font-handwriting text-center mt-2 text-gray-600 text-sm">
+                            "pap pap pap pap 😗"
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-pink-cream p-4 rounded-xl mt-6 border-2 border-pink-soft">
+                    <div class="font-handwriting text-center text-gray-700">
+                        Falling in love with you was the easiest thing i've ever done.
+                        Nothing matters to me, but you and every day i'm alive, i'm aware of this.
+                        I love you the day i met you, i love you today, and i will love you the rest of my life.
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevPage()" class="bg-gray-300 text-gray-700 font-clean py-3 px-6 rounded-full hover:bg-gray-400 transition-all duration-300">
+                        👈 Kembali
+                    </button>
+                    <button onclick="nextPage()" class="bg-pink-soft text-white font-clean py-3 px-6 rounded-full hover:bg-pink-600 transition-all duration-300">
+                        Selanjutnya 👉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Daily Chat WhatsApp -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page5">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-4 border-pink-light">
+                <h2 class="font-elegant text-4xl text-pink-600 text-center mb-8">Daily Chat Kita 💬</h2>
+                
+                <!-- Chat Bubbles Simulation -->
+                <div class="flex flex-col space-y-4">
+                    <div class="flex justify-end">
+                        <div class="bg-pink-soft text-white p-3 rounded-2xl rounded-tl-sm max-w-xs font-clean">
+                            "Morning sayanggg"
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <div class="bg-pink-soft text-white p-3 rounded-2xl rounded-tl-sm max-w-xs font-clean">
+                            "Hari ini ada kegiatan apaa?"
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-start">
+                        <div class="bg-gray-100 p-3 rounded-2xl rounded-tr-sm max-w-xs font-clean">
+                            "kerja sayang hehehehe"
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <div class="bg-pink-soft text-white p-3 rounded-2xl rounded-tl-sm max-w-xs font-clean">
+                            "KERJA TERUS IHHHHHH!!!!!"
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-start">
+                        <div class="bg-gray-100 p-3 rounded-2xl rounded-tr-sm max-w-xs font-clean">
+                            "hehehe! 🤪💕"
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-pink-cream p-6 rounded-xl border-2 border-pink-soft">
+                    <div class="font-handwriting text-center text-gray-700 text-lg">
+                        "Hampir setiap pagi kamu nanyain "Hari ini ada kegiatan apa?" <br />
+                        Kamu tau ga pertanyaan ini tuh buat aku penuh makna dan selalu jadi semangat aku setiap pagi. 💞
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevPage()" class="bg-gray-300 text-gray-700 font-clean py-3 px-6 rounded-full hover:bg-gray-400 transition-all duration-300">
+                        👈 Kembali
+                    </button>
+                    <button onclick="nextPage()" class="bg-pink-soft text-white font-clean py-3 px-6 rounded-full hover:bg-pink-600 transition-all duration-300">
+                        Selanjutnya 👉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Pesan Dari Hati -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-8 journal-texture" id="page6">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-3xl mx-auto border-4 border-pink-light">
+                <div class="text-center">
+                    <div class="text-6xl mb-6">💌</div>
+                    <h2 class="font-elegant text-4xl text-pink-600 mb-8">Pesan Dari Hati</h2>
+                    
+                    <div class="font-handwriting text-xl text-gray-700 leading-relaxed text-left">
+                        <p class="mb-4">My Dearest Baby... 🥰</p>
+                        
+                        <p class="mb-4">
+                            You know what? Every morning when I wake up,
+                            my first thought is always about you...
+                            How lucky I am to have someone as precious as you in my life.
+                            You're my everything, my whole world! ✨
+                        </p>
+                        
+                        <p class="mb-4">
+                            Thank you for being my daily dose of happiness...
+                            For those silly stickers you send that make me giggle,
+                            for your sweet good morning texts that warm my heart,
+                            and those goofy TikTok videos that never fail to make my day brighter! 🌟
+                        </p>
+                        
+                        <p class="mb-4">
+                            On this super special birthday of yours,
+                            I just wanna tell you how grateful I am
+                            to have you as my partner in crime, my best friend,
+                            and my favorite person in the whole wide world! 💫
+                        </p>
+                        
+                        <p class="mb-4">
+                            May this year be filled with endless cuddles,
+                            countless ice cream dates, and sooo many
+                            beautiful memories for us to cherish forever.
+                            You deserve all the happiness baby! 🌈
+                        </p>
+                        
+                        <p class="text-center text-pink-600 font-semibold mt-8">
+                            I love you to the moon and back, times infinity! 
+                            You're my everything and more... ❤️
+                        </p>
+                        
+                        <p class="text-right mt-6 text-pink-500">
+                            Forever yours,<br>
+                            Your Baby 💝
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevPage()" class="bg-gray-300 text-gray-700 font-clean py-3 px-6 rounded-full hover:bg-gray-400 transition-all duration-300">
+                        👈 Kembali
+                    </button>
+                    <button onclick="showSurprise()" class="bg-gradient-to-r from-pink-soft to-pink-600 text-white font-clean py-3 px-8 rounded-full hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        Ada Kejutan Lagi! 🎁
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Kejutan Final -->
+        <div class="journal-page min-h-screen flex items-center justify-center p-4 journal-texture" id="surprise">
+            <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 max-w-md sm:max-w-2xl mx-auto border-4 border-pink-light text-center relative">
+                <h2 class="font-elegant text-3xl sm:text-4xl text-pink-600 mb-4 sm:mb-6">Gift Box</h2>
+                
+                <div class="font-handwriting text-base sm:text-lg text-gray-700 mb-6 sm:mb-8">
+                    Klik kotak kadonya sayangg...
+                </div>
+                
+                <!-- Gift Box Animation -->
+                <div class="gift-box mb-6 sm:mb-8" onclick="openGiftBox()">
+                    <div class="gift-container">
+                        <div class="gift-base"></div>
+                        <div class="gift-lid" id="giftLid"></div>
+                        <div class="gift-ribbon-v"></div>
+                        <div class="gift-ribbon-h"></div>
+                        <div class="gift-bow"></div>
+                    </div>
+                </div>
+                
+                <!-- Letter that appears after gift opens -->
+                <div class="letter" id="wishlistLetter" style="display: none;">
+                    <button class="letter-close" onclick="closeLetter()">&times;</button>
+                    <div class="letter-content">
+                        <div class="text-center mb-3">
+                            <h3 class="font-elegant text-xl sm:text-2xl text-pink-600 mb-2">💌 Wishlist</h3>
+                            <div class="font-handwriting text-sm text-gray-500">For my sweetheart</div>
+                        </div>
+                        
+                        <div class="wishlist-item">
+                            🌟 <span class="ml-2">Fine Dining Dinner</span>
+                        </div>
+                        <div class="wishlist-item">
+                            🎬 <span class="ml-2">Jakarta Aquarium</span>
+                        </div>
+                        <div class="wishlist-item">
+                            🏖️ <span class="ml-2">Lembang Color Paint</span>
+                        </div>
+                        <div class="wishlist-item">
+                            📸 <span class="ml-2">Beach Photo</span>
+                        </div>
+                        <div class="wishlist-item">
+                            🎪 <span class="ml-2">Dufan Date</span>
+                        </div>
+                        <div class="wishlist-item">
+                            🥘 <span class="ml-2">Cooking Date</span>
+                        </div>
+                        
+                        <div class="text-center mt-4 pt-3 border-t border-pink-200">
+                            <div class="font-handwriting text-pink-600 text-sm">
+                                "and most importantly time with you❤️"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="font-elegant text-xl sm:text-2xl text-pink-500 mb-6 sm:mb-8">
+                    Happy Birthday, My Love! 🎂✨
+                </div>
+                
+                <button onclick="restartJournal()" class="bg-gradient-to-r from-pink-soft to-pink-600 text-white font-clean py-3 px-6 sm:px-8 rounded-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm sm:text-base">
+                    Baca Lagi Dari Awal 💕
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 6;
+        let isTransitioning = false;
+
+        // Fungsi untuk membuka jurnal dengan animasi smooth
+        document.getElementById('openJournal').addEventListener('click', function() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            const cover = document.getElementById('cover');
+            const journal = document.getElementById('journal');
+            
+            // Fade out cover
+            cover.classList.add('fade-out');
+            
+            setTimeout(() => {
+                cover.style.display = 'none';
+                journal.classList.remove('hidden');
+                journal.style.display = 'block';
+                
+                // Reset semua halaman terlebih dahulu
+                for (let i = 1; i <= totalPages; i++) {
+                    const page = document.getElementById('page' + i);
+                    if (page) {
+                        page.classList.remove('active', 'slide-out-left', 'slide-out-right');
+                        page.style.visibility = 'hidden';
+                    }
+                }
+                document.getElementById('surprise').classList.remove('active', 'slide-out-left', 'slide-out-right');
+                document.getElementById('surprise').style.visibility = 'hidden';
+                
+                // Tampilkan halaman pertama
+                const firstPage = document.getElementById('page1');
+                if (firstPage) {
+                    firstPage.style.visibility = 'visible';
+                    firstPage.style.transform = 'translateX(0) scale(1)';
+                    firstPage.style.opacity = '1';
+                    firstPage.classList.add('active');
+                    currentPage = 1;
+                }
+                
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 600);
+            }, 800);
+        });
+
+        // Fungsi untuk menampilkan halaman dengan animasi smooth
+        function showPage(pageNum, direction = 'next') {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            const currentPageElement = currentPage > 0 ? document.getElementById('page' + currentPage) : null;
+            const newPageElement = document.getElementById('page' + pageNum);
+            const surpriseElement = document.getElementById('surprise');
+            
+            // Hapus class active dari semua halaman dan sembunyikan
+            for (let i = 1; i <= totalPages; i++) {
+                const page = document.getElementById('page' + i);
+                if (page) {
+                    page.classList.remove('active', 'slide-out-left', 'slide-out-right');
+                    page.style.visibility = 'hidden';
+                }
+            }
+            surpriseElement.classList.remove('active', 'slide-out-left', 'slide-out-right');
+            surpriseElement.style.visibility = 'hidden';
+            
+            // Animate current page out
+            if (currentPageElement) {
+                if (direction === 'next') {
+                    currentPageElement.classList.add('slide-out-left');
+                } else {
+                    currentPageElement.classList.add('slide-out-right');
+                }
+            }
+            
+            // Prepare new page
+            if (newPageElement) {
+                // Show the new page immediately but position it for animation
+                newPageElement.style.visibility = 'visible';
+                if (direction === 'next') {
+                    newPageElement.style.transform = 'translateX(100px) scale(0.95)';
+                } else {
+                    newPageElement.style.transform = 'translateX(-100px) scale(0.95)';
+                }
+                newPageElement.style.opacity = '0';
+                
+                // Animate new page in
+                setTimeout(() => {
+                    newPageElement.classList.add('active');
+                    currentPage = pageNum;
+                    
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 600);
+                }, 300);
+            } else {
+                // Jika halaman tidak ditemukan, reset
+                isTransitioning = false;
+            }
+        }
+
+        // Fungsi untuk halaman selanjutnya dengan animasi
+        function nextPage() {
+            if (isTransitioning) return;
+            if (currentPage >= totalPages) return;
+            showPage(currentPage + 1, 'next');
+        }
+
+        // Fungsi untuk halaman sebelumnya dengan animasi
+        function prevPage() {
+            if (isTransitioning || currentPage <= 1) return;
+            showPage(currentPage - 1, 'prev');
+        }
+
+        // Fungsi untuk menampilkan kejutan dengan animasi
+        function showSurprise() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            const currentPageElement = document.getElementById('page' + currentPage);
+            const surpriseElement = document.getElementById('surprise');
+            
+            // Remove active from all pages and hide them
+            for (let i = 1; i <= totalPages; i++) {
+                const page = document.getElementById('page' + i);
+                if (page) {
+                    page.classList.remove('active');
+                    page.style.visibility = 'hidden';
+                }
+            }
+            
+            // Animate current page out
+            if (currentPageElement) {
+                currentPageElement.classList.add('slide-out-left');
+            }
+            
+            // Prepare surprise page
+            surpriseElement.style.visibility = 'visible';
+            surpriseElement.style.transform = 'translateX(100px) scale(0.95)';
+            surpriseElement.style.opacity = '0';
+            
+            // Animate surprise page in
+            setTimeout(() => {
+                surpriseElement.classList.add('active');
+                
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 600);
+            }, 300);
+        }
+
+        // Fungsi untuk restart jurnal dengan animasi
+        function restartJournal() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            const journal = document.getElementById('journal');
+            const cover = document.getElementById('cover');
+            const surpriseElement = document.getElementById('surprise');
+            
+            // Fade out current view
+            surpriseElement.classList.remove('active');
+            surpriseElement.classList.add('slide-out-left');
+            
+            setTimeout(() => {
+                journal.style.display = 'none';
+                cover.style.display = 'block';
+                cover.classList.remove('fade-out');
+                
+                // Reset all pages
+                for (let i = 1; i <= totalPages; i++) {
+                    const page = document.getElementById('page' + i);
+                    if (page) {
+                        page.classList.remove('active', 'slide-out-left', 'slide-out-right');
+                        page.style.visibility = 'hidden';
+                    }
+                }
+                surpriseElement.classList.remove('active', 'slide-out-left', 'slide-out-right');
+                surpriseElement.style.visibility = 'hidden';
+                
+                currentPage = 0;
+                isTransitioning = false;
+            }, 600);
+        }
+
+        // Gift box functionality
+        let giftOpened = false;
+        
+        function openGiftBox() {
+            if (giftOpened) return;
+            
+            giftOpened = true;
+            const giftLid = document.getElementById('giftLid');
+            const letter = document.getElementById('wishlistLetter');
+            
+            // Animate lid opening
+            giftLid.style.animationPlayState = 'paused';
+            giftLid.style.transform = 'rotate(-45deg) translateY(-20px)';
+            giftLid.style.transformOrigin = 'bottom left';
+            giftLid.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            
+            // Show confetti
+            createConfetti();
+            
+            // Show letter after lid opens
+            setTimeout(() => {
+                letter.style.display = 'block';
+                letter.style.animation = 'letterAppear 1s ease-out forwards';
+            }, 800);
+        }
+        
+        function closeLetter() {
+            const letter = document.getElementById('wishlistLetter');
+            letter.style.animation = 'none';
+            letter.style.transform = 'translate(-50%, -50%) scale(0) rotate(10deg)';
+            letter.style.opacity = '0';
+            
+            setTimeout(() => {
+                letter.style.display = 'none';
+                // Reset gift box for next interaction
+                giftOpened = false;
+                const giftLid = document.getElementById('giftLid');
+                giftLid.style.transform = '';
+                giftLid.style.transition = '';
+                giftLid.style.animationPlayState = 'running';
+            }, 500);
+        }
+
+        // Enhanced confetti effect dengan smooth animation
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerHTML = ['💕', '🌸', '✨', '💖', '🌺'][Math.floor(Math.random() * 5)];
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                confetti.style.zIndex = '1000';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.userSelect = 'none';
+                document.body.appendChild(confetti);
+                
+                const animationDuration = Math.random() * 2000 + 3000;
+                const horizontalMovement = (Math.random() - 0.5) * 200;
+                
+                confetti.animate([
+                    { 
+                        transform: 'translateY(-10px) translateX(0px) rotate(0deg)', 
+                        opacity: 1 
+                    },
+                    { 
+                        transform: `translateY(50vh) translateX(${horizontalMovement/2}px) rotate(180deg)`, 
+                        opacity: 1 
+                    },
+                    { 
+                        transform: `translateY(100vh) translateX(${horizontalMovement}px) rotate(360deg)`, 
+                        opacity: 0 
+                    }
+                ], {
+                    duration: animationDuration,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                }).onfinish = () => confetti.remove();
+            }
+        }
+
+        // Enhanced event listener for confetti with smooth timing
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' && !isTransitioning) {
+                createConfetti();
+            }
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('journal').style.display === 'block') {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextPage();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevPage();
+                }
+            }
+        });
+
+        // Smooth scroll prevention during transitions
+        document.addEventListener('wheel', function(e) {
+            if (isTransitioning) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Touch event handling for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.addEventListener('touchend', function(e) {
+            if (document.getElementById('journal').style.display === 'block' && !isTransitioning) {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                
+                // Only trigger swipe if horizontal movement is greater than vertical
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                    if (deltaX > 0) {
+                        // Swipe right - go to previous page
+                        prevPage();
+                    } else {
+                        // Swipe left - go to next page
+                        nextPage();
+                    }
+                }
+            }
+        }, { passive: true });
+        
+        // Initialize page states
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure all pages start in the correct state
+            for (let i = 1; i <= totalPages; i++) {
+                const page = document.getElementById('page' + i);
+                if (page) {
+                    page.classList.remove('active');
+                } else {
+                    console.error('Page not found during init: page' + i);
+                }
+            }
+            const surprise = document.getElementById('surprise');
+            if (surprise) {
+                surprise.classList.remove('active');
+            }
+            
+            // Add mobile viewport meta optimization
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+            }
+        });
+    </script>
+</body>
+</html>
